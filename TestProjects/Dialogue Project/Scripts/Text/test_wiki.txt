@@ -1,0 +1,59 @@
+Four things will appear in a box like this and attempt to scroll, but get smushed.
+
+1 first a bunch of numbers
+2 second
+3 third 
+4 fourth
+5 fifth 
+6 six
+7 seven
+8 I didn't time when the next thing appears
+9 8 
+108 
+118 
+128 
+139 
+149 
+159 
+169 
+179 
+18101810101810
+19101910101910
+20102010102010
+21102110102110
+22102210102210
+23112311112311
+24112411112411
+25112511112511
+26112611112611
+27112711112711
+28122812122812
+29122912122912
+30123012123012
+31123112123112
+32 32 I'm Done{#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

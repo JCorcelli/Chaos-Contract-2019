@@ -1,0 +1,303 @@
+#guidict# is a hierarchy with key properties
+
+replacement>pointer>adopted stack 
+
+"first laptop is going to be unrealistically easy" so I think
+
+#component# are disabled before adding
+
+#static dict# the guigame dictionary is static
+
+c #local scope# [replaced] variable takes a duplicate of the original. Requires a link modifier.
+
+basic structure
+
+#static#guigame > Interface , App > Dictionary... 
+#dictionary#component, window, variable
+#variable#global, local; replacement, struct, class component
+
+
+#searching# variables
+	search order local definition > logical or declared parent > global
+#searching# dictionary
+	Root, FindRoot(string)
+	Find, FindAll ; recursive optional
+	
+	
+"""hypothetical"""
+x #trash collection/ / ie dessimate# could be used to shrink dictionary sizes.
+	I'd lose variables, lists, links, or the original object declaration. 
+	
+	> This would mean no backward-compatibility, no saving.
+	
+#runtime scripting?# edit textasset. 
+	1. Build new dictionary when file is modified. 
+	2. Compare ingame dict. 
+?	3. Linked dictionaries would be informed. 
+	(3.) Or, a special script could compare them.
+	
+#format of mods#
+GuiRule 
+atlas mods are saved in GuiWorld/GuiAtlas
+
+reading the header also alters the window in GuiWorld/GuiBlock
+
+#naming# o done
+^: atlas name :
+|window name :|
+
+
+"alternative uses"
+# hierarchy generation 
+	behavior tree. a dedicated parser. 
+?	not really necessary is it?
+# layers of windows
+	building 3D geometry in layers, floors of a house. Of course there'd have to be some way to.
+"list access" o done
+# modules
+first, get something worth reusing outside the current class
+
+
+#########
+
+btree modules need to function, any form of static reference will work
+
+access can be performed like Shell does it
+	Bracket, dot, and other symbol notation
+	
+> Continue to add parser list access.
+c pass
+	x first
+	
+	o second
+		After parsing, all variables in this component can be immediately accessed.
+		any static references
+		function calls
+>	third / runtime
+		GAME, namespace, class, etc... for deep reference to instanced classes
+		lambda calls
+		
+	anything else? 
+		A standard output of some kind to log errors.
+		
+o First pass
+o Second pass
+{	
+	copy
+		&C
+	link
+		%C
+		C[1]
+		.C[ggggg].vv.hi[1234]
+	backpedal
+		..
+		....... # will end early?
+	recursive find
+		>>, <<, <
+	list
+		A.*[0] all nth within the list of A
+		A.** hierarchy of A
+	wildcard list
+		C.*g if key == g in the list
+		C.**g if key == g in the hierarchy
+	string match
+		C[*g] if key contains g in list
+		C[**g] ""
+	byref
+		GAME
+		GLOBAL / <<<
+
+		
+	conditional match
+		default, stay 
+
+		C[= C] C is named C "keep"
+		C[is C] C is named C "keep"
+		C[>1]  is a number greater than 1
+		C['>1] length >1
+		
+		# ! elimination
+		C[!is C] C is named C #remove#
+		
+		# contains element
+		& contains a matching element
+		
+		C[& is C] C contains something named C
+		C[& >1] is a number greater than 1
+		C[& NUM>1] is a number greater than 1
+		C[& &>1] list >1 item
+		C[& '>1] length >1
+		C[& LENGTH>1] length >1
+		C[& COUNT>1] list >1 item
+		C[& LIST>1] list >1 item
+		
+		
+		# more
+		
+		#1
+		C[& *g] C has an element containing g
+		C[& **g] C has anything in hierarchy containing g
+		#3
+		C.gogo[is *g] gogo.key contains g
+		C[@1] C is the nth in the list starting at 0
+		C[INDEX=1] C is the nth in the list starting at 0
+		C[@>1][@<5] C is between index 1 and 5 in the list
+		
+		
+		
+	Slice # will repeat at length
+		C[1:2]  1 letter
+		C[1:0]  1 letter backward
+		C[0:]   forward from first letter
+		C[-1:]  backward from last letter
+		C[:10]  will add 10 letters
+		C[:-10] backward 10
+	Slice list
+		C[& 1:2]  1 list element
+		
+		
+	Inclusion From File # requires files / library
+		INCLUDE filename.txt 			
+	
+	#? Including makes it difficult to debug
+
+	create if not present
+		%%C link C and append missing values to reference
+		&&C copy C and append
+		
+	byref GAME
+		
+
+		
+o static
+	%%%link to and define a static class value
+	&&&S.C copy values found at S.C
+}
+Runtime
+
+	
+	Lambda Operations
+{
+o	working directory
+o		default directory
+		@..
+		Reference point is parent
+		
+o		@<<HUB
+		Set reference point to variable containing HUB
+		
+		
+o	Referencing
+		C or %C
+		C = 1 sets C to a listed value, 1
+		eg. C = 1,2,3
+		
+		%C. = 1 sets C.key to 1
+		
+		#Search lists
+		*C  set values
+		*C. fill key or set one value
+		C*  set all values under C
+		C*. fill keys under C or set one value
+		
+		
+	variable, temporary
+		
+		default: %%A ref A/create A at the working directory
+		null-skip : null values don't compute or result in false conditions
+		
+		#left-hand null behavior
+		#temp
+		&A null
+		&&A create
+		
+		&&&A null
+		%%%A create
+		
+		
+		string concat, multiplier, add, subtract
+		math in/out 
+			for comma delimited lists, merge sum required
+			x no power of function
+		list concat
+		o = 
+		+=...
+			
+The additions this week resemble command-line type operations, with dot notation: shortcut commands, recursive find, backpedaling, string slice, copy, create, and reference, conditional find. Statically typed dictionaries are nearly automatic which means real-time debugging simply happened.
+
+o MATH;a="1+1","2+2";
+o compile time a;MATH(){a = 1+1,2+2} 
+o runtime a = MATH(1+1,2+2)
+
+o GUI
+	window variables
+	window directions 
+		self-mod interpretation (left-to-right?)
+		external
+		atlas directions ^atlas:UDLR
+
+
+
+
+updated 4/4/2022
+	remake build for a generic GUI
+	o	variable paths
+	?	windows, use guiworld instead of guidict?
+		variable notation for window replacement (can't be replacement..icons)
+			o change replace to fetch
+			# apply_var is a sentinel, it required
+			# the presence of replacement is significant
+			# likely bug introduced here, and cluttered  (3) ways, it's reading 
+				1 dict if no apply  
+				dict>apply_var>0>
+					if replacement?
+				2	0>parent
+					else
+				3	parent
+				
+	x?		is there some way to place the correct dictionary in one location before it reaches the build?
+	
+		yes! if the correct dictionary was swapped, but that is a waste of computing power
+}
+			
+			
+Build Update
+Requires an applied use case
+	c Instance manipulation
+	?	I think this is how it'll work
+		
+		instancing
+			namespace, class[LIST] new instances are class[0]
+			
+			realtime instance control, output totem ref? (if applicable)
+			
+	o	static
+			%%%C namespace, class, static
+			
+	c	network of instances
+			%%%NetworkName should work fine
+			
+
+
+# not important right now
+future:
+	The GUI generator. It won't be completely free.
+	Network Extension
+	Create with a build script 
+		needs to be able to mirror dictionaries
+		
+		%%%Ref	# always static
+		[A]		# global, but local to app
+		
+		How do I define a network? A List?
+		This could work
+			Net, A { 1=1,2,,2=1,2,,3=1,2 }
+			Net, B { 1;2;3;4 }
+		
+		
+		To read from a network calls
+			&Net.A
+		B=&A referencing A? requiring update calls
+		
+
+Work on the use case: see comment desktopsimdate.txt

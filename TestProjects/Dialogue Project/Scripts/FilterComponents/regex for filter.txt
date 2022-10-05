@@ -1,0 +1,37 @@
+
+		/*
+		// regex match "a (vowel)", replace "an " + vowel
+		private const string vowels = @"aeiou";
+		
+		protected static string a (char n){
+			if (vowels.Contains(""+n))
+				return "an";
+				
+			else return "a";
+		}
+		*/
+		
+			StringBuilder sb = new StringBuilder();
+			int lastCharPos = 0;
+			
+			make a regex with wildcards in it
+			// experimenting
+			// [\S\w]*[ @wild cards@ ][\S\w]*
+			// match all but spaces
+			
+			// [\S\w]*[              ][\S\w]*[^\p]
+			// can't match spaces, last character can't be punctuation
+			
+			// requires wildcards, or no match
+			sb.Append( @"[\S\w]*[" );
+			wci = 0;
+			for (; wci < wcL; wci++)
+			{
+				sb.Append( wildcards[wci] );
+			}
+			sb.Append( @"][\S\w]*[^\p]" );
+			
+			
+			
+			Regex rx = new Regex(sb.ToString()); // every wildc, character, and the first whitespace after
+			

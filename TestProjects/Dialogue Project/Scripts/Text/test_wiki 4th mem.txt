@@ -1,0 +1,5 @@
+{cps 10000000}
+This is the fourth memory
+1
+2
+3

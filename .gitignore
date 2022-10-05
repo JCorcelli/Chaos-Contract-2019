@@ -1,0 +1,20 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!*.cs
+!*.js
+!*.txt
+!*.ahk
+!*.unity
+!*.mat
+!*.prefab
+!*.asset
+!*.fbx
+
+!LICENSE
+
+
+# ...even if they are in subdirectories
+!*/

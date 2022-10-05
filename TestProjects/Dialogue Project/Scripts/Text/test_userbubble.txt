@@ -1,0 +1,38 @@
+{source.start}{source.end}{New}{NewLine}{NewHeader This is a test}{#
+
+}{user user 1}{cps 250}{InsertIcon user 1}ab cd ef gh ij klmnopqrst 1234567{#
+}AAAAAAAAAAAAA AAAAAAAA {InsertRight user 2}{InsertRight user 2}{InsertRight user 2} AAAAAAAA AAAAAAAAAAAAAAAAA AAAAAAAA
+A12345ABCDEGFFkkkkKKAAAAABBBB{InsertLeft user 1}{InsertLeft user 1}1234{InsertLeft user 1}1234
+545
+{NewLine}{NewHeader User 2}{InsertIcon user 2}
+{user user 2}This is supposed to show a second user
+{NewLine}{NewHeader This is a test 2}{user user 1}{cps 25}{InsertIcon user 1}{InsertIcon user 2}
+This test will continue
+I want to see what might happen if this went on longer.
+{user}
+{NewHeader Red says}{user user 1}{cps 26}{InsertIcon user 1}
+
+I wonder how insignificant this chat box looks
+{cps 55} I really hope it's almost done
+{cps 25}{user}
+{NewLine}
+ note to self: make widgets work already
+
+{NewLine Green says}{cps 20}{user user 2}{InsertIcon user 2}
+
+I can probably talk at normal speed without a big difference in impact right now.
+
+{NewLine Red says}{cps 20}{user user 1}{InsertIcon user 1}
+
+Maybe if the window moved to where we were talking it'd look better, or if this text looked different.{user.end}
+{NewLine}
+Long pause
+
+...
+{cps 30}
+
+...........  {user.end}
+{NewLine Green shrugs}{user user 2}
+{user user 2}{InsertIcon user 2}
+{user.end}
+end

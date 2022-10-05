@@ -1,0 +1,181 @@
+
+#	There should be a Border2D for any 2D physics
+#
+#	static hub for updates, otherwise apps have to check for updates manually
+#		dictionary <string, GuiDict> game
+#
+#"user traps"	
+#proximity trigger enabling app
+#altering mouse behavior
+#no cancel ( literal trap  )
+
+#Interface GameObject, [activator] only use activator to make it appear / vanish
+Interface, LaptopInterface
+{
+	
+	owner = "Unknown"
+	
+	Idol, LaptopIdol {
+		#Resource, Ob / Scan Name, activator, options
+		Model, Model
+		
+		Group, Restriction, [power_on = 1] [top_open = 1] [battery_charged > 0] [timeofday < .8]
+		{
+			Trigger, Proximity, ,[proximity = 1] {  
+				#| ascii window code |
+				radius = .75
+				
+				Canvas, ProximityText, [proximity = 1] [zone_on = 1] {
+				|there's a laptop| 
+				}
+				
+			}
+		
+			Signal, ZoneSignal, [proximity = 1][mouse][button][zone_on],[inFocus]
+			{
+				OnClick(mouse){
+				[mouse = 1][zone_on = 1] inFocus = 1
+				
+				}
+				OnPress(button){
+				[button = use]inFocus = 1
+				[button = cancel]inFocus = 0
+				[button = inventory]inFocus = 0
+				
+				} 
+				
+			}
+			
+			Canvas3D, Screen, [top_open = 1][screen] {
+			
+				|[screen]|
+				
+			}
+		}
+		
+	}
+	Canvas, Screen, [top_open = 1][screen] {
+	
+		|[screen]|
+		
+	}
+	
+	# put a defined app or variable in braces "[a]"
+	# adding @ could have greater meaning, but I'll add random data to the folder for now
+	
+	Installs = Funsies64, Datesim# this could avoid verbose file declaration, ie: installs OS can setup the basic file system
+	Autorun = #[n app]
+	
+	# file in quotes, folders are variable
+	Files {
+		Replace ( @, RandomFiles() )
+		C {
+			ProgramFiles {
+				Datesim{
+					
+					Datesim as "sim.exe"  # renamed main app file, the file name shouldn't matter the "app" is just a link anyway
+					Datesim.vars
+					readme.txt = "have a fun game!" # make a string in place
+					}
+				Weather {Weather ".exe" ,Data {@}} 
+				Calculator {Calculator ".exe" }
+				Users {}
+				Default  {Desktop}
+				[owner] { 
+					Desktop { 
+						Datesim.lnk ="C/ProgramFiles/Datesim/sim.exe"  
+						Crash as "Manilla Folda"
+						Calculator ".exe" # append .exe to the name, and if the app doesn't exist it's just a string
+						Weather ".exe"
+						}
+					 Downloads  {@ }
+					 Favorites  {}
+					 Music      {}
+					 Pictures   {}
+					 Videos     {}
+					 Documents  {}
+					 AppData    {}
+					 }
+				Funsies {
+					System { 
+						WindowView
+						"kernel.bat"
+						@
+						}
+					}
+				}
+			}
+		D {
+			"Aee.music"
+			"Be.music"
+			"Ci.music"
+			Crash as "Dee.music"
+		}
+	} 
+	
+	Canvas, DesktopCanvas { #Grid
+	
+		parent = screen
+		#local definitions?
+		Icons {a = Datesim, b = Crash, c = Calculator, d = Weather, e = RecycleBin, f = Scribble, g = Notepad, h = WindowView}
+		
+		Default_Ext { file = WindowView, txt = Notepad, bmp = Scribble, web browser = TorFox, music = Muzac }
+		
+		bu = Gui, Buttons {
+		|[Power Button][ ][Reset Button]|
+		}
+		Window, Desktop {
+			|BG|
+			
+			
+			+---------------------------+
+			|                           |
+			| [ desktop               ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [ Taskbar               ] |
+			|                      [bu] |
+			+---------------------------+
+			
+			
+		
+		}
+		desktop = Window, Desktop { # could also try a RandomGrid(a,b,c,d,e)
+			+---------------------------+
+			|[a][ ][ ][c]               |
+			|[b][e][ ][ ]               |
+			|[ ][ ][ ][d]               |
+			|[ ][ ][ ][ ]               |
+			|                           |
+			|                           |
+			   
+			   
+		}
+		
+		s = StartMenu
+		Gui, Taskbar {
+			|L[s][search][[home][cmd][       ]][tasks] R[hidden][mute][datetime]|
+		}
+		#apps = a,b,c,d,e
+		#app2 = c, @, b, @
+		Window, StartMenu  { # [mode] row col or grid
+			    +-----------------+
+				|[a      ][c     ]|
+				|[b      ][@     ]|
+				|[c      ][b     ]|
+				|[d      ][@     ]|
+				|[               ]|
+			    +-----------------+
+				
+		}
+			
+	
+		Replace ( @, RandomFiles() )
+	}
+	
+	
+}

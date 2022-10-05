@@ -1,0 +1,59 @@
+
+
+1 NOW ALL CAPS, THIS IS DAIFFERENT. OBSERVE THE ART
+2 SECOND                 A
+3 THIRD                  A
+4 FOURTH                 A
+5 FIFTH                  A
+6 SIX                    A
+7 SEVEN                  A
+8 THIS IS THE SECOND THING OF FOUR THINGS
+9 8                      A
+108                      A
+118                      A
+128                      A
+139                      A
+149                      A
+159                      A
+169                      A
+179                      A
+18101810101810           A
+19101910101910           A
+20102010102010           A
+21102110102110           A
+22102210102210           A
+23112311112311           A
+24112411112411           A
+25112511112511           A
+26112611112611           A
+27112711112711           A
+28122812122812           A
+29122912122912           A
+30123012123012           A
+31123112123112           A
+32 32 I'M DONE{#          A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

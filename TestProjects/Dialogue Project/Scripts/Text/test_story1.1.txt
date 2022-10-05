@@ -1,0 +1,28 @@
+{NewLine}{NewHeader ???}{cps 25}{#
+}{Camera 1}Hey.
+{Sleep 3}
+{Camera 2}Ooh. Ooh.
+
+I'm taking you home with me today.
+
+Don't be scared. 
+
+{Camera 3}You're~ 
+
+
+{Camera 4}so~ 
+
+
+{Camera 5}cute(!).
+{NewLine}{NewHeader ???}Eat up, there's lots of noms for you.
+{NewLine}[Graze to remain calm.]
+{NewLine}[Day of adoption.]
+{NewLine}{NewHeader ???}Nom nom nom.
+{NewLine}[Try exploring.]
+{NewLine}{NewHeader ???}No.{Animate BunnyHop1}
+{NewLine}[3 weeks since adoption.]
+{Camera 6}{Sleep 6}
+{NewLine}[1 month since adoption.]
+{NewLine}{NewHeader ???}"Bunneh."{Sleep 3}"Bunneh."{Sleep 3}"Bunneh."{Animate BunnyBite}
+Ow. It's ok. You're new at this.
+{NewLine}[3 months old.]{Animate BunnyLick}

@@ -1,0 +1,26 @@
+I think I can treat the text like a grid, and stop trying to turn things into rect
+
+use a list linePositions
+
+write the class
+WorldText now I'm imagining an animated world of powerful text interaction, breaking rows to insert text, great
+	List<BText>, 1 line each, all inserted text
+	WordList<WordSprite>, positionless text on the margins or in the list
+	
+WordSprite
+	position can change instantly so instead use grid
+	x, y,  WorldText parent, word
+	local x, local y if in parent, global x global y if not
+	
+write the methods to move and interact
+	GetPos, XY, return World, word, char?null
+	SetPos, XY, move without inserting
+	Insert, XY, insert as many new lines or spaces needed
+	
+	LocalToGlobalXY
+	GlobalToLocalXY, something's inserted to world, and world is split... so the position of something is both global and local
+	
+	and
+	
+	Linecast, step over lines to find if specific objects are interacting
+	

@@ -1,0 +1,26 @@
+{NewHeader Red says}{user user 1}{cps 26}{InsertIcon user 1}
+
+I wonder how insignificant this chat box looks
+{cps 25} I really hope it's almost done
+{cps 25}{user}
+{NewLine}
+ note to self: make widgets work already
+
+{NewLine Green says}{cps 20}{user user 2}{InsertIcon user 2}
+
+I can probably talk at normal speed without a big difference in impact right now.
+
+{NewLine Red says}{cps 20}{user user 1}{InsertIcon user 1}
+
+Maybe if the window moved to where we were talking it'd look better, or if this text looked different.{user.end}
+{NewLine}
+Long pause
+
+...
+{cps 30}
+
+...........  {user.end}
+{NewLine Green shrugs}{user user 2}
+{user user 2}{InsertIcon user 2}
+{user.end}
+end

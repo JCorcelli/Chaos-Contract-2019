@@ -1,0 +1,5 @@
+
+Filter could do a string replace for conventions such as name, place, thing
+Filter could do a string replace for generic details, this is definitely becoming another markup if I start
+
+name is another variable

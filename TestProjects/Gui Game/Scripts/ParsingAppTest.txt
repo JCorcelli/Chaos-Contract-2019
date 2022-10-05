@@ -1,0 +1,470 @@
+
+#Inherits the interface activators
+#App Name, [key = Name], [activator]
+# key variables: callback, files, g / global, icon, taskbar, [hidden = 0], [background = 0]
+# for futher realism, the interface must implement changes in variables by subscribing to the app's callback, a generic uninstall app can be implemented
+
+App, Datesim : [app_on = 1] { 
+# making an imitation of a premade game
+# most seems meaningless atm
+
+	
+	
+	hasPlayed; scene; stage
+	
+	
+	title = |"Play Bunneh Sim Date"|
+	
+	file_vars = global
+	
+	path = C/ProgramFiles/Datesim/
+	files {
+		Path Datesim".exe"
+		Path data/file_vars
+		
+	}
+	
+
+	scene_window = Window, Scene {|M|}
+	
+	#this needs to be a prefab with a preference name
+	icon = Image, DateSimIcon {icon=datesim}
+	
+	Window, MainWindow, visible
+	{
+		m = minimize
+		p = maximize
+		x = exit
+		titlebar = Gui, Title 
+		{L[icon][title]    R[m][p][x]}
+		
+		+--------------+
+		|[titlebar    ]|
+		|[scene_window]|
+		|[            ]|
+		|[            ]|
+		|[            ]|
+		|[            ]|
+		|[            ]|
+		|[            ]|
+		+--------------+
+	}
+	
+	Taskbar, DateSimTask, task = {[icon][title]}
+	
+				
+	
+	#Inherits the interface activators
+	#activator = {power_on, top_open, battery_charged, timeofday, signal}
+	
+	
+	Window, StartMenu : [scene 0], {
+		parent = scene_window
+		
+		#[variable =] Button, [name,] text, activator, method or operation
+		#unassigned button is displayed in place
+		b1 = Button, Continue : [hasPlayed], [scene = 3]
+		b2 = Button, New Game: [!hasPlayed], [scene = 2]
+		b3 = Button, "New Game+": [score > 1], [scene = 4] # safety ""
+		b4 = Button, Settings :             , [scene = 1]
+		b5 = Button, Start Over: [hasPlayed], [ResetApp()]
+		
+		# it almost seems natural, I could click these like they were buttons
+		+---------------+     +-------------- +
+		|               |     |               |
+		|    [b1   ]    |     |    [     ]    |
+		|    [b2   ]    |     |    [b3   ]    |
+		|    [b4   ]    |     |    [     ]    |
+		|    [     ]    |     |    [b5   ]    |
+		|               |     |               |
+		+---------------+     +-------------- +
+		
+		
+	}
+	
+	datescene = Window, DateScene
+	altered_s = C[datescene] # not sure
+	Window, Settings : [scene = 1]  {
+	
+		parent = scene_window
+	
+		
+		w1 = Window, Step1 : [step = 1] {
+			Gui, Week {
+			["day"] 
+			["event"] [Button, RandomWeek()]}
+			Gui, Sky {[ScrollHorizontal, ,SetSky()]}
+			Gui, Location {[ScrollHorizontal, ,SetLocation()]}
+			Gui, Random { [Button, RandomLocation()]}
+		}
+		w2 = Window, Step2 : [step = 2]{
+			Gui, Ambience {
+			[ScrollHorizontal, ,SetAmbienceGroup()]
+			[ScrollHorizontal, ,PickAmbience()    ]}
+			
+			Gui, ShowAll { [Button, ShowAllAmbience()]}
+			Gui, DoesNothing { [Button, DeselectAmbience()]}
+			Gui, ClearAmbience { [Button, ClearAmbience()]}
+		}
+		w3 = Window, Step3 : [step = 3] {
+		
+		t = "Original"
+		acc = "Accept Changes?"
+		tt = AmbCount
+		
+		# a scene 'picture' couldn't display in high fidelity this way but a description of it could, and still hovering could make an image pop-out
+		 +-------------+                
+		 | [t ]  [tt]  |                   
+		 |[datescene ] |               
+		 |[          ] |               
+		 |[          ] |
+		 |[          ] |
+		 |     [   acc]| 	
+		 +-------------+
+		}
+		
+		s1 = Button, StepSelect : , [step = 1]
+		s2 = Button, StepSelect2 : , [step = 2]
+		s3 = Button, StepSelect3 : , [step = 3]
+		sel = {[s1][s2][s3]} # fill selector, no margins
+		
+		
+		#datescene on left
+		#altered_s on right
+		
+		b1 = Button, All random : , [SetRandom()]
+		b2 = Button, Undo All   : , [SetUndoAll()]
+		b3 = Button, Clear All  : , [SetClearAll()]
+		
+		
+		# step ?
+		b6 = To Title, Exit : [step = 1], [stage = 1]
+		b8 = Button, Back : [step > 1]
+		
+		s= "Settings"
+		
+		settings = Window, Options {[w1],[w2],[w3]} # , makes them completely overlap, this behavior is similar to radio
+		
+		# with many small moving parts, it really makes more sense to use 'small images' rather than text, and still, clicking on one element of the text could generate the next, and the next
+		+---------------------------+
+        | [  s ] [b1 ] [b2] [b3]    |
+        |          [sel ]           |
+        | [settings  ] [altered_s ] |
+        | [          ] [          ] |
+        | [          ] [          ] |
+        | [          ] [          ] |
+        | [          ] [          ] |
+        |               [b6] [b8]   |
+        |                           |
+        +---------------------------+
+        
+    
+        
+		b7 = Button, Submit : [step = 3]
+		b9 = Button, Next : [step < 3]
+		
+		# option to place things with function
+		#SetPosition(b7, b6)   
+		#SetPosition(b9, b8)
+        
+		
+		
+		
+		
+	
+	
+	
+	}
+	
+	realTimeOption = Text, Teaser {text="Real Time Mode"} #nst Text
+	
+	teaserButton = Hover, TeaserHover
+	{
+		# should this be methods?
+		
+		#Default, exit {|"realTimeOption"|}
+		exit = "realtime"
+		enter = "You should play first."
+	}
+	
+	Window, Starting Date : [scene = 2] {
+	
+		parent = scene_window
+		
+		b1 = Button, WaitMode : , [scene = 3]
+		b2 = Hover, TeaserHover
+		{
+			# should this be methods?
+			
+			#Default, exit {|"realTimeOption"|}
+			exit = |[realTimeOption]|
+			enter = "You should play first."
+		}
+		
+		# have i tried 3x + nesting yet?
+		rt = Button, Return To Title : ,[scene = 0]
+		re = Window, returnToTitle {[row][                   ][rt]}
+		 
+		
+		+-------------- +
+		| "Have fun."   | # this should add a text object
+		|[b1   ] [b2   ]|
+		|[     ] [     ]|
+		|[     ] [     ]|
+		|               |
+		|        [re]   |
+		+-------------- +
+		
+
+	}
+	
+	# these lists are parsed to the global dictionary
+	# todo: is this necessary?
+	
+	topics = TextAsset("date_topics", ">>>")
+	quips content = TextAsset("date_topics_content", "\r\n###########\r\n")
+	quips = SplitArrays(quips content, "*****")
+	
+	# seems like I have to parse the file
+	response content = TextAsset("date_topics_response", "\r\n###########\r\n") # ey
+	#
+	responses = SplitArrays(response content, "*****")
+	greetings {
+	1 = TextAsset("wait_stage1", ">>>") 
+	2 = TextAsset("wait_stage2", ">>>") 
+	3 = TextAsset("wait_stage3", ">>>")
+	4 = TextAsset("wait_stage4", ">>>")}
+	
+	# probably not a good method idea
+	#ChangeTopic()
+	#{
+	#	Random(topics)
+	#	quip = quips[Random.prev]
+	#	response = responses[Random.prev]
+	#}
+	
+	# it's global?
+	stage_reached = 0
+	
+	# Does it actually help? In this case. The methods don't have a reason to change.
+	quip = QuipWidget, Quips {
+		bgColor = defaultColor
+		
+		Gui, Quip {|text|}
+		OnChange()
+		{
+			[stage >= 5]
+			Reset()
+		}
+		OnChange()
+		{
+			[stage > 0][stage < 5]
+			Flash(stage)
+			
+			[stage_reached > stage] #activate
+			
+			[stage_reached = stage]
+			greeting = greetings[stage]
+			NewLine(Random(greeting)) # better replace \\n with \n
+			NewLine(Random(quips[stage])) # does this parse?
+			
+			
+			Sleep(1)
+			NewLine(@"Bunneh")
+			
+			NewLine(Random(responses[stage])) # does it parse?
+		}
+	
+		
+	}
+	# program "signal button"
+	# wishful thinking atp
+	hoverColor = .8,.1,.3,1
+	failColor =.8,.1,.3,1
+	startColor = 1,1,1,1
+	activeColor = .8,0,0,1
+	
+	usedColor = startColor
+	
+	pressedColor = startColor
+	defaultColor = 1,1,1, .65
+	
+	
+	signal = Signal, SelectOption {
+		bgColor = startColor
+		text_color = black
+		selected = 0
+		amt = .13 # this should be defaulted if unspecified
+		OnEnter() {
+		
+			bgColor = hoverColor
+			BackToWhite()
+		}
+		OnSignal() { 
+			[response_stage >= stage]
+			{
+				FailAddColor()
+			}
+			[response_stage < stage]
+			[response_stage = stage]
+			selected = 1
+			bgColor = activeColor
+			[relation += amt]
+		}
+		
+		OnReset() {
+			bgColor = startColor
+			text_color = black
+			selected = 0
+		}
+	
+	}
+	# type, go name, activator, , modifier
+	selected_options = 0
+	
+	# todo none of this looks reasonable
+	# this changes the available options based on stage, the options are signals that take a number or keypress
+	# is it possible? or too complicated?
+	
+	options = RadioWidget, Date Option {
+		#go name, activator
+		Radio, Stage1 : [stage = 1] {
+		
+		#bullet, widget
+		
+		[signal], , amt = 0 [option = 1]{|"1""I quit. I hop away. Bunneh off bed."|}
+		[signal], , amt = 0.2 [option = 2]{|"2""Flick feet in distaste."|}
+		[signal], , amt = 0.5 [option = 3]{|"3""Stare meaningfully."|}
+		[signal], , amt = 0 [option = 4]{|"4""Stare meaninglessly."|}
+		[signal], , amt = 0 [option = 5]{|"5""Pretend you're alone."|}
+		}
+		
+		Radio, Stage 2 : [stage = 2] {
+		[signal], , [option = 1][ChangeTopic()]{(Change topic.)}
+		}
+		
+		Radio, Stage 3 : [stage = 3] {
+
+		[signal], , [option = 1]{"1""(thump)"}
+		[signal], , [option = 2]{"2""(Look angry.)"}
+		[signal], , [option = 3]{"3""(Charge!)"}
+		[signal], , [option = 4]{"4""(Kiss.)"}
+		[signal], , [option = 5]{"5""(Don't Flinch.)"}
+		}
+		Radio, Stage 4 : [stage = 4] {
+		[signal], , [option = 1]{(Get off the bed.)}
+		}
+		# defaults to
+		Radio, No Options  {
+			|Start the game|
+		}
+	}
+	Window, DateOn : [scene 3], {
+		
+		parent = scene_window
+		|[datescene]| # I want to copy the object here
+		
+		
+		#variable = Button, Continue, [hasPlayed], [scene = 3]
+		# assigned button must be called
+		b = Button, Back : [stage > 0], [stage--]
+		
+		s = Button, Start : [stage <= 0], [stage++]
+		c = Button, Continue : [stage < 4], [stage++]
+		q = Button, Quit : [stage = 0], [scene = 0][app_on = 0]
+		e = Button, End Date : [stage = 0][scene = 6]
+		
+		# Gui, Go name, activator
+		date = Gui, DateAppGui {
+		+-------+  #+-------+
+		|[b][ c]|  #|  [s]  |
+		|[q][ e]|  #|       |
+		+-------+  #+-------+
+		SetPosition(s, c, b) # actually I like it. The variables n.. can be anonymous too, leaving blanks on the page
+		}
+		
+		op = options # does this work?
+		
+		+-------------------+
+		| [op   ]           |
+		| [     ]   [quip ] |
+		| [     ]   [     ] |
+		|           [     ] |
+		| [     ]           |
+		| [date ]   [     ] |
+		| [     ]           |
+		+-------------------+
+
+	}
+	
+	
+	realtimeButton = Hover, RealTimeHover
+	{
+		# todo here i'm passing a window as a variable without a component. that sounds good but does it work already?
+			
+		exit {|[realTimeOption]|}
+		enter {
+			#call a method?
+			# text has a black bg?
+			Text, Text,[relation <3] { You aren't ready. (relation < 3) }
+			Button, RealTime, [relation>=3],[scene = 5]
+		}
+	}
+	
+	Window, Starting Plus : [scene 4] , 
+	{
+	
+		parent = scene_window
+		
+		wb = Button, WaitMode : , [scene = 3] # minor redundancy
+		mb = realtimeButton
+		rt = returnToTitle
+		+-------------- +
+		|"New Date+"    |
+		|[wb   ] [mb   ]|
+		|[     ] [     ]|
+		|[     ] [     ]|
+		|               |
+		|        [rt]   |
+		+-------------- +
+		
+		
+		
+	}
+	Window, RealDateOn : [scene 5],  {
+		parent = scene_window
+		
+		OnActivate() {Jerri(RealDate)} # this should execute if the window activates, and only then
+		
+		
+		mb = realtimeButton
+		rt = returnToTitle
+		+-------------- +
+		|  [a   ]       |
+		|  [b   ]       |
+		|               |
+		|     [c    ]   |
+		|               |
+		|        [rt]   |
+		+-------------- +
+		
+	}
+	Window, EndDate : [scene 6],  {
+		parent = scene_window
+		
+		End = |"End of Date Status"|
+		#title
+		it = |"Title"|
+		comm = comment # this is a pre-programmed thing not a window in the usual sense
+		+-------------- +
+		|[End   ]       |
+		|[      ]       |
+		| [it]  [title ]|
+		|       [comm  ]|
+		|       [      ]|
+		+-------------- +
+		
+		Button, ReturnToTitle : ,[scene = 0]
+	}
+	
+}

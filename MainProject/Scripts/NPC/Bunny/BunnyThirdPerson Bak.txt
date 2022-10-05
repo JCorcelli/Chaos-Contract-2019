@@ -1,0 +1,409 @@
+﻿using UnityEngine;
+using System.Collections;
+using ActionSystem;
+using Utility.Managers;
+using SelectionSystem;
+
+namespace NPCSystem
+{
+	[RequireComponent(typeof(Rigidbody))]
+	[RequireComponent(typeof(Animator))]
+	public class BunnyThirdPerson : AbstractButtonHandler, IMovable, IRepellable, IPosable
+	{
+		[SerializeField] float m_MovingTurnSpeed = 60;
+		[SerializeField] float m_StationaryTurnSpeed = 90;
+		[SerializeField] float moveSpeedMultiplier = 1f;
+		[SerializeField] float animSpeedMultiplier = 1f;
+		
+		protected float _animSpeedMultiplier;
+		protected float _moveSpeedMultiplier;
+		[SerializeField] float m_GroundCheckDistance = 1f;
+		[SerializeField] LayerMask activeLayers = 1;
+
+		protected Rigidbody m_Rigidbody;
+		protected Animator anim;
+		protected const float k_Half = 0.5f;
+		protected float m_TurnAmount;
+		protected float m_ForwardAmount;
+		protected Vector3 m_GroundNormal;
+		
+		
+		
+
+
+		protected float idleTime = 0.0f;
+		protected float idleDelay = 3f;
+		protected bool idle = false;
+		
+		protected float runDelay = 3f;
+		protected float runTime = 3f;
+		
+		protected int baseState = 0;
+		protected int subState = 0;
+		protected bool stationary = false;
+		public float stoppingDistance = 2.2f;
+		protected EffectHUB effect;
+		
+		protected override void _OnPress(){
+			base._OnPress();
+			
+			if ( Input.GetButtonDown("shift") )
+			{
+				stationary = true;
+			}
+			
+		}
+		protected override void OnHold() {
+			
+			if ( Input.GetButton("shift") )
+			{
+				stationary = true;
+				return;
+			}
+			else
+				stationary = false;
+				
+		}
+		
+		protected void Start()
+		{
+			effect = GetComponentInParent<EffectHUB>();
+			anim = GetComponent<Animator>();
+			m_Rigidbody = GetComponent<Rigidbody>();
+			
+			
+
+			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+			
+			_damping = damping;
+			_animSpeedMultiplier = animSpeedMultiplier;
+			_moveSpeedMultiplier = moveSpeedMultiplier;
+		}
+
+		
+		protected bool hyperactive = false;
+		public float jumpForce = 1.5f;
+		protected bool jumping = false;
+		public bool touchingGround = false;
+		
+		
+		public void Jump() {
+			if (!touchingGround) return;
+			m_Rigidbody.AddRelativeForce( Vector3.up * jumpForce, ForceMode.VelocityChange);
+			jumping = true;
+		}
+		
+		
+		
+		
+		public void Repel (float force, Vector3 source, float radius) {
+			if (Time.time < 1f) return; // may be falsely repelled early
+			
+			// using IRepellable
+			if (force > 0)
+			{
+				_damping = 3f;
+				if (source != Vector3.zero)
+				{
+					m_Rigidbody.AddExplosionForce( force, source, radius, 0.0f, ForceMode.Acceleration);
+				}
+				
+				if (!hyperactive)
+				{
+					Jump();
+				}
+				_animSpeedMultiplier = 1.5f;
+				_moveSpeedMultiplier = .6f;
+				StopCoroutine("RepelCooldown");
+				StartCoroutine("RepelCooldown");
+					
+			}
+			hyperactive = true;
+			StopCoroutine("HyperCooldown");
+			StartCoroutine("HyperCooldown");
+		}
+		
+		public float repelTimer = 5f;
+		protected IEnumerator HyperCooldown() {
+			
+			yield return new WaitForSeconds(repelTimer);
+			hyperactive = false;
+			_animSpeedMultiplier = animSpeedMultiplier;
+			_moveSpeedMultiplier = moveSpeedMultiplier;
+			
+		}
+		protected IEnumerator RepelCooldown() {
+			
+			yield return new WaitForSeconds(repelTimer);
+			_damping = damping;
+		}
+		public int pose = 0;
+		public void SetPose(int i) {
+			// I suppose this'll be a base state change later or setting busy
+			pose = i;
+			anim.SetInteger("Pose", pose); // <state>.Idle
+			anim.SetTrigger("PoseT"); // <state>.Idle
+			StopCoroutine("DelayedEndPose");
+			StartCoroutine("DelayedEndPose");
+		}
+		
+		protected float pose_delay = 1f;
+		protected IEnumerator DelayedEndPose()
+		{
+			
+			yield return new WaitForSeconds(pose_delay);
+			
+			if (pose > 0)
+			{
+				pose = 0;
+				anim.SetInteger("Pose", 0); // <state>.Idle
+				anim.SetTrigger("PoseT"); // <state>.Idle
+			}
+		}
+		
+		public int GetPose() {
+			return pose;
+		}
+		
+		protected float distance = 0f;
+		protected bool isWalking = false;
+		protected bool isRunning = false;
+		protected bool isTurnAssisted = false;
+		public void Move(Vector3 move)
+		{
+			// using IMovable
+			// convert the world relative moveInput vector into a local-relative
+			// turn amount and forward amount required to head in the desired
+			// direction.
+			
+			if (pose > 0) 
+			{
+				if (hyperactive)
+				{
+					SetPose( 0);
+				}
+				return; // pose is fine and busy
+			}
+			isWalking = anim.GetCurrentAnimatorStateInfo(0).IsName("Walking");
+			isRunning = anim.GetCurrentAnimatorStateInfo(0).IsName("Running");
+			isTurnAssisted = isWalking || isRunning;
+			
+			distance = move.magnitude;
+			if (distance > 1f)
+				move.Normalize();
+			
+			if (!stationary && distance > stoppingDistance) 
+			{
+				// select
+				// run or walk?
+				if (hyperactive ) 
+				{
+					anim.SetInteger("SubState", 2); // <state>.run
+					subState = 2;
+					
+				}
+				else
+				{
+					anim.SetInteger("SubState", 1); // <state>.walk
+					subState = 1;
+				}
+				
+				anim.SetInteger("BaseState", 1); // actual motion
+				baseState = 1;
+				idleTime = 0.0f;
+				
+					
+				idle = false;
+					// probably moving
+			}
+			else
+			{
+				idleTime += Time.deltaTime;
+				
+				
+				if (!hyperactive && (idleDelay <= idleTime || stationary))
+				{
+					anim.SetInteger("BaseState", 0);  //Idle
+					baseState = 0;
+					idle = true;
+					
+					
+				}
+				anim.SetInteger("SubState", 0);  //Idle
+				subState = 0;
+				
+				
+					
+			}
+			
+			move = transform.InverseTransformDirection(move);
+			CheckGroundStatus();
+			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
+			m_TurnAmount = Mathf.Clamp(Mathf.Atan2(move.x, move.z), -1f, 1f);
+			
+			if (isWalking)
+			{
+				
+				if (distance < 6f)
+				{
+					m_ForwardAmount = (distance / 6f);
+				}
+				else
+				{
+					m_ForwardAmount = move.z;
+				}
+			}
+			else
+			{
+				m_ForwardAmount = move.z;
+			}
+
+			
+			if (isTurnAssisted)
+				ApplyExtraTurnRotation();
+
+
+			// send input and other state parameters to the animator
+			UpdateAnimator(move);
+				
+		}
+
+
+
+		protected float forward_speed = 1f;
+		
+		protected virtual void UpdateAnimator(Vector3 move)
+		{
+			// update the animator parameters
+			
+			float nTime = Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1);
+			
+			anim.SetFloat("Forward", m_ForwardAmount * forward_speed, 0.1f , Time.deltaTime);
+				
+				
+					
+			
+			anim.SetFloat("Turn", m_TurnAmount , 0.5f , Time.deltaTime);
+			
+			
+			if (move.magnitude > 0)
+			{
+			
+				// modify the upwards force, so I can climb small inclines
+				if (touchingGround && nTime >= .3f && nTime < .7f)
+				{
+					if (isRunning)
+					{
+						if (hyperactive)
+							Hop(runHop * .5f);
+						else
+							Hop(runHop);
+					}
+					else if (isWalking)
+						Hop(walkHop);
+				}
+
+				// the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
+				// which affects the movement speed because of the root motion.
+			
+				
+				anim.speed = _animSpeedMultiplier;
+			}
+			else
+			{
+				anim.speed = 1; // If it's standing still then it ought to play idle normally. perhaps.
+			}
+		}
+
+
+		
+		
+		public float runHop = 2f;
+		public float walkHop = 1f;
+		void ApplyExtraTurnRotation()
+		{
+			// help the character turn faster (this is instead of root rotation)
+			
+			float nTime = Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1);
+			
+			
+			if (baseState == 1 && isWalking) // I want walking state basically
+			{
+				//float turn = Mathf.Abs(anim.GetFloat("Turn"));
+				//float forward = anim.GetFloat("Forward");
+				//bool stationaryTurn = forward < .01f || (forward < 0.5f && forward < turn) || (forward < .2f && turn > 1f);
+				
+				if (nTime > 0.412f && nTime < .9f)
+				{
+					return;
+				}
+					
+			}
+			
+			float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
+			m_Rigidbody.rotation *= Quaternion.Euler(0, m_TurnAmount * turnSpeed  * Time.deltaTime, 0);
+		}
+
+		public float damping = 4f;
+		protected float _damping = 4f;
+		
+		
+		protected void Hop(float force) {
+			
+			m_Rigidbody.AddRelativeForce( Vector3.up *force, ForceMode.VelocityChange);
+			
+		}
+		public void OnAnimatorMove()
+		{
+			// we implement this function to override the default root motion.
+			// this allows us to modify the positional speed before it's applied.
+			if (Time.deltaTime > 0)
+			{
+				
+				
+				
+				
+				
+			
+				Vector3 v = (anim.deltaPosition * _moveSpeedMultiplier) / Time.deltaTime;
+
+				
+				
+				
+				m_Rigidbody.velocity = Vector3.MoveTowards(m_Rigidbody.velocity, v, _damping* Time.deltaTime);
+					
+				
+				m_Rigidbody.rotation *= anim.deltaRotation; // I should probably make sure it points upwards on the ground normal here
+				
+				
+				
+			}
+			
+		}
+		
+		void CheckGroundStatus()
+		{
+			RaycastHit hitInfo;
+#if UNITY_EDITOR
+			// helper to visualise the ground check ray in the scene view
+			Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * m_GroundCheckDistance));
+#endif
+			// 0.1f is a small offset to start the ray from inside the character
+			// it is also good to note that the transform position in the sample assets is at the base of the character
+			if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance, activeLayers))
+			{
+				touchingGround = true;
+				m_GroundNormal = hitInfo.normal;
+				
+			}
+			else
+			{
+				touchingGround = false;
+				m_GroundNormal = Vector3.up;
+			}
+		}
+
+		
+	}
+	
+}

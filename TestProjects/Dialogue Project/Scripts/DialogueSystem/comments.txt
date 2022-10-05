@@ -1,0 +1,15 @@
+
+#archived: dialogue feature progress.txt
+"C#" can fill static dict, but static constructors quietly fail
+   
+o clicking on scannable works
+scan a user
+scan a storage
+add a ui to flip through the items and go from there{
+	make a ui generator
+	define the component scripts, in the laziest way possible
+	instance them in a logical manner from a method (then I can imitate this for behavior trees)
+	
+	
+	}
+after:  maybe next I should upgrade the cursortest

@@ -1,0 +1,15 @@
+Lorem ipsum doloar sit amet, consectetur adipiscing elit. Maecenas bibendum congue scelerisque. Nunc eget varius tellus, at sollicitudin neque. Cras condimentum quam sollicitudin
+
+{Bunneh {BunnehB 30#fps} {a} {A_waka} }
+{Bunneh {v 30#fps} {Aa} {A} }
+
+Nunc rhoncus{a} nisi id egestas vestibulum. Integer non elit a neque mollis u{b}llamcorper. Duis tortor dui, imperdiet a fauc{Bunneh}ibus consequat, ultricies quis metus. Cras sed nisi id mi volutpat eleifend abcac vel risus. Proin vestibulum leo la{c}cus, sit amet scelerisque urna fringilla vitae. Curabitur vitae ipsum sed tortor condimentum pulvinar nec non nisi. 
+mmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmnmmmmmmmmmmmmm{Bunneh}
+
+this is a preview of a pretty basic text 'memory', but here it gets heavily corrupted.
+
+------------------> box 1 is input. 
+
+------------------> box 2 is a slurred version.
+
+------------------> box 3 is a damaged recording of box 1 {stuff in curled braces is preserved for show}

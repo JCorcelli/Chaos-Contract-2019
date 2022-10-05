@@ -1,0 +1,81 @@
+scene HybridUIBase
+
+This isn't the finished product
+	camera is ok
+	bunny hops funny
+	see-thru walls is automatic, not stylized
+
+Effect
+	x zone, no effect?
+	no button displayed for cancel, or use
+	
+Desktop Emulation
+	emulation is entirely comprised of ubiquitous interfaces in this context
+	> loading (no delay) I'd prefer no delay... but hard drives have load times
+		x hard drive emulation
+	task bar icon works
+	x home 
+	x start
+	
+Simdate Program
+	bugged
+	redoing as necessary
+	
+	settings
+		x ambience is broken/ bugged
+		after selection the cursor repeatedly places without wanting to
+	
+	date
+	?
+	end 
+		x bugs:
+		says realtime, everytime? 
+		doesn't have clickable right-side
+			fix with a title button or add another layer to click on
+	
+	
+	start over button
+		c no warning screen
+		erases progress
+		removes ambience
+		
+	quip widget
+		looks like a chat box
+		
+	quit in the date closes the app?
+	
+
+"Work on the use case"
+	>
+	redesign the app script
+
+	program: look at the app prototype
+	interpret: 
+		activators as lambda
+		importing text to code
+		option to place things with function
+		
+	cs components for behavior
+	Mods
+			
+		button # default text, hover, exit
+		text
+			hover text, enter/exit # check how it works already.
+		signal
+			keybind when active
+			hover color, 
+			text color
+			methods: enter/exit/click (or key)/reset
+		Random(list)
+		
+		# inherit the button/signal?
+		Radio?
+		QuipWidget
+			Onchange
+			Flash(stage)
+			NewLine(Random(quips[stage]))
+		
+			
+	methods
+		TextAsset("date_topics", ">>>")
+		SplitArrays(response content, "*****")

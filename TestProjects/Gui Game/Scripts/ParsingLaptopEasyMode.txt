@@ -1,0 +1,338 @@
+
+#	There should be a Border2D for any 2D physics
+#
+#	static hub for updates, otherwise apps have to check for updates manually
+#		dictionary <string, GuiDict> game
+#
+#"user traps"	
+#proximity trigger enabling app
+#altering mouse behavior
+#no cancel ( literal trap  )
+
+#Interface GameObject, [activator] only use activator to make it appear / vanish
+Interface, LaptopInterface
+{
+	# global vars
+	owner = "Unknown"
+	
+	Idol, LaptopIdol {
+		#Resource, Ob / Scan Name, activator, options
+		Model, Model
+		
+		Group, Restriction : [power_on = 1] [top_open = 1] [battery_charged > 0] [timeofday < 80]
+		{
+			Trigger, Proximity, ,[proximity = 1] {  
+				#| ascii window code |
+				radius = .75
+				
+				ProximityCanvas, ProximityText, [proximity = 1] [zone_on = 1] {
+				|"there's a laptop"| 
+				}
+				
+			}
+		
+			Signal, ZoneSignal : [proximity = 1][mouse][button][zone_on],[inFocus]
+			{
+				OnClick(mouse){
+				[mouse = 1][zone_on = 1] inFocus = 1
+				
+				}
+				OnPress(button){
+				[button = use]inFocus = 1
+				[button = cancel]inFocus = 0
+				[button = inventory]inFocus = 0
+				
+				} 
+				
+			}
+			
+			Canvas3D, Screen : [top_open = 1] {
+			
+				#|[screen]|
+				
+			}
+		}
+		
+	}
+	
+	Canvas, Screen : [top_open = 1] {
+	
+		|[screen]|
+		
+	}
+	
+	#Window, Test {}
+	# put a defined app or variable in braces "[a]"
+	# adding @ could have greater meaning, but I'll add random data to the folder for now
+	
+	Installs = Funsies64, Datesim# this could avoid verbose file declaration, ie: installs OS can setup the basic file system
+	
+	Autorun = #[n app]
+	
+	# file in quotes, folders are variable
+	# the behavior of files is very specific to Laptop or some other computer
+	
+	Files, HardDrive 
+	{
+	# as a variable this method wasn't being read. is that a problem? Obviously.
+		
+		Replace ( @, RandomFiles() )
+		
+		^ATLAS NAME:RD
+		 
+		   +      box down  :  +
+		   |       A           | 
+		   |       T
+		   |       O
+		   |CLEFT[a     ]BRIGHT|
+		   |   A2.INNERZ.UTER     
+		   |     ABCDEFGH
+		   |     12345678  P
+		   |       
+		   |
+		   |
+		   +      box up    :  +
+		 
+		 
+		 
+		 
+		 
+
+		~^
+		
+		^ATLAS NAME:
+
+		   +LEFT box down   :RD+
+		   |                   |
+		   |                   |
+		   +LEFT box up     :RU+
+		 
+
+		~^
+		
+		NOVAR
+		
+		C {
+			ggggg = "text!" # make a string in place
+			ProgramFiles {
+				Datesim{
+					
+					Datesim as "sim.exe"  # renamed main app file, the file name shouldn't matter the "app" is just a link anyway
+					Datesim.vars
+					readme.txt = "have a fun game!" # make a string in place
+					}
+				Weather {
+					Weather ".exe" 
+					Data {@}
+					} 
+				Calculator {Calculator ".exe" }
+				Users {}
+				Default  {Desktop}
+				%owner% { 
+					Desktop { 
+						Datesim.lnk ="C/ProgramFiles/Datesim/sim.exe"  
+						Crash as "Manilla Folda"
+						Calculator ".exe" # append .exe to the name, and if the app doesn't exist it's just a string
+						Weather ".exe"
+						}
+					 Downloads  {@ }
+					 Favorites  {}
+					 Music      {}
+					 Pictures   {}
+					 Videos     {}
+					 Documents  {}
+					 AppData    {}
+					 }
+				Funsies {
+					System { 
+						WindowView
+						"kernel.bat"
+						@
+					}
+				}
+			}
+		}
+		D {
+		
+			"Aee.music"
+			"Be.music"
+			"Ci.music"
+			Crash as "Dee.music"
+		}
+	}
+	
+	
+	Canvas, TCanvas { #Grid
+		parent = screen
+		
+		#local definitions?
+		a = Datesim,, b = Crash,, c = Calculator,, d = Weather,, e = RecycleBin,, f = Scribble,, g = Notepad,, h = WindowView
+		
+		
+		Default_Ext { file = WindowView, txt = Notepad, bmp = Scribble, web browser = TorFox, music = Muzac }
+		
+		bu = Buttons, Buttons {
+		|[Power Button][ ][Reset Button]|
+		}
+		DesktopCanvas, DesktopCanvas { # it semed to break here
+			
+			|BG|
+			
+     + ----            ----------- + 
+                                    
+         [desktop              ]       
+     |   .  MODS               .       
+     |                         .      
+     |                         .     
+     |                         .       
+     |                         .       
+     |   .                     .      
+                            [bu]      
+                                      
+     + --------------------------- + 
+			
+			
+		
+		}
+		desktop = Desktop, Desktop { # could also try a RandomGrid(a,b,c,d,e)
+			+---------------------------+
+			| [b][e][ ][ ]              |
+			| [ ][ ][ ][d]              |
+			| [ ][ ][ ][ ]              |
+			|                           |
+			|                           |
+			|                           |
+			| [a][ ][ ][c]              |
+			|[taskbar                  ]|
+			+                           +
+			   
+		
+		}
+		
+		taskbar = Taskbar, Taskbar {
+			|[s           ][ASearch                  ][Home][cmd][       ][tasks] [hidden][mute][datetime]|
+		}
+		
+		# ASearch declared as Search prefab
+		ASearch = Search, ASearch{}
+		
+		
+		#apps = a,b,c,d,e
+		# StartButton is a prefab, and should have a script that takes StartMenu like a parameter
+		s = StartButton, Start {
+			
+			c = Calculator #using 2 definitions error
+			cc = Calculator
+			StartMenu, StartMenu {
+				+ -----    ----  +
+				 [a     ][cc    ]  
+				 [b     ][@     ] 
+				 [c     ][b     ] 
+				 [d     ][@     ] 
+				 [              ] 
+				+ ---*-- -- ---  +
+				  #* button location#
+			}
+			
+			
+		}
+		#app2 = c, @, b, @
+		
+		
+		#	OnClick() {
+		#		Toggle(b)
+		#	}
+		#
+		
+		
+		str = X = 1,,X = 2,,X = 3 = 4 = 5,,,, X2=6,7
+		GoHere
+		
+		A = AA, BB, CC
+		A = 1,2,5
+		B = A2
+		
+		MATH; C = "1+2+3+4" #C/1
+		
+		
+		
+		XDEBUG ( )
+		{
+			@.. # set working dir
+			
+			
+			%%D[&<1] += 1,1 # list filter example, succeeds as long as the list is empty
+			%%D[&<1] += 1,1 # null list, does nothing
+			[%%D[&<1]%] #null list, False
+			Print(hi) #hi, now understands single-method
+			[0]|[ ]|[%THIS_DOESNT_EXIST%]|[False]["False"] #False
+			: #=else, something has to be in here
+			[Anything != Above] #True
+			:
+			[GetTrue()] # Can call one method in a line
+			
+			# experimentation
+			
+			%D += 2 		#addition: 3, 3
+			%D*. += 3, 1 	#per key:  6, 4
+			%D += 3, E 		#merge list: 6,4,3,E
+			%D += HI 		#concatenation: 6+HI, 4+HI, 3+HI, EHI
+			%%F = FFF + 1 + 2 # FFF+3
+			
+			%%G = MergeRaw(&A, "hi", 2+2) # result is unaltered: &A, "hi", 2+2 
+			%%H = MergeList(&A, "hi", 2+2) # result is decompressed: 1,2,5, "hi", 2+2 (note: A = 1,2,5)
+			%%I = MergeSum(1+1, 2+2) # default: 2, 4
+			%%String = MathString('",1+1, 2+2, "A+B CDE",'") # result is one string: "2,4,A+B CDE"
+			
+		}
+		
+		Replace ( @, RandomFiles() )
+		
+		
+		
+		
+	}
+	
+	BehaviorTree, BB 
+	{
+		main 
+		{
+			sequence 
+			{
+				A
+				B
+				C
+				repeat 
+				{ 
+					params = delay = 1, max success = 3
+					lambda {
+						params = message
+						action = message, hi, repeat, message
+						gohere = 0,1=1,,2=2,,3=2,,4=2,,5
+						a = 0,1=1,,2=2,,3=2,,4=2,,5
+						success() {
+						
+						[%a[2]% = %a[3]%]
+						
+						%a[1] = %a[2]%
+						
+						}
+						failure() {}
+						sleep { params = delay = 1 } 
+					}
+				}
+			}
+			select 
+			{
+				A
+				B
+				bool { true }
+				C
+			}
+		}
+		A
+		B
+		C
+	}
+	
+}

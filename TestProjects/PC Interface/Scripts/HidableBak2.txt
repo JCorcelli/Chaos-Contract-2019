@@ -1,0 +1,131 @@
+﻿using UnityEngine;
+using System.Collections;
+using SelectionSystem;
+using CameraSystem;
+
+namespace NPCSystem
+{
+	public class Hidable : AbstractAnyHandler {
+
+		public GameObject hiddenObject;
+		public bool touchingCover = false;
+		public HidingSpot hidingSpot;
+		public HidingSpot _hidingSpot;
+		public string requireGroup = "";
+		public string coverGroup = "";
+		public SphereCollider lastCover;
+		public Collider touchingCollider;
+		public bool hidden = false;
+		public int count = 0;
+		
+		public Transform targetB {
+			
+			get{return CameraHolder.instance.targetB;}
+		}
+		
+		protected override void OnPress()
+		{
+			if (hidden && Input.GetButtonDown("mouse 1"))
+			{
+				hiddenObject.transform.position = targetB.position;
+			}
+			else if (Input.GetButtonDown("use")) 	Hide();
+		}
+		
+		protected override void OnHold()
+		{
+			if (hidden && Input.GetButton("mouse 1"))
+			{
+				
+				hiddenObject.transform.position = targetB.position;
+			}
+			
+		}
+		protected override void OnLateUpdate(){
+			if (hidden)
+				StayInZone();
+		}
+		protected void StayInZone() {
+			if (lastCover == null) return;
+			float d = Vector3.Distance( lastCover.transform.position, hiddenObject.transform.position ); // distance from center
+			float scaledDistanceLimiter = lastCover.radius * lastCover.transform.lossyScale.y;
+			
+			if ( d   > scaledDistanceLimiter  )
+			{
+				Vector3 backmove = Vector3.MoveTowards(hiddenObject.transform.position, lastCover.transform.position, d - scaledDistanceLimiter); // extra distance after subtracting the max
+				
+				hiddenObject.transform.position = backmove * 1.01f;
+			}
+		}
+		protected void Hide()
+		{
+			if ( touchingCover )
+			{
+				if (!hidden)
+				{
+					hidden = true;
+					hiddenObject.SetActive(false);
+					if (_hidingSpot != null) 
+						_hidingSpot.Hide();
+					hidingSpot = _hidingSpot;
+					requireGroup = coverGroup;
+					
+					
+					lastCover = touchingCollider as SphereCollider;
+				}
+				else if (coverGroup == requireGroup)
+				{
+					hidden = false;
+					hiddenObject.SetActive(true);
+					if (hidingSpot != null) hidingSpot.Show();
+					
+				}
+			}
+			
+		}
+		protected void OnTriggerEnter(Collider col)
+		{
+			
+			HidingSpot hs = col.GetComponent<HidingSpot>();
+			
+			if (hs != null) 
+			{
+				_hidingSpot = hs;
+				touchingCover = true;
+				coverGroup = _hidingSpot.group;
+				
+				touchingCollider = col;
+				if (requireGroup == coverGroup)
+				{
+					
+					if (hidden) 
+					{
+						hidingSpot.Show();
+						_hidingSpot.Hide();
+					}
+					
+					hidingSpot = _hidingSpot;
+					lastCover = touchingCollider as SphereCollider;
+				}
+				count ++;
+			}
+		}
+		protected void OnTriggerExit(Collider col)
+		{
+			
+			HidingSpot hidingSpot = col.GetComponent<HidingSpot>();
+			
+			if (hidingSpot != null) 
+			{
+				count --;
+				if (count <= 0)
+				{
+					touchingCover = false;
+					
+				}
+			}
+			
+			
+		}
+	}
+}

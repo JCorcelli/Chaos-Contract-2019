@@ -1,0 +1,784 @@
+#considering definitions, that activate a bunch of keyword alternatives
+Basics
+{
+#Default, variable code. Component-oriented.
+
+	#component
+	component, default{}
+	; soft line break, treated like a line break
+	
+	
+	#defining variables
+	#reserved by default
+	variable =,;{}()[]   window ^+|-*
+	parent, replacment, hub, NOVAR
+	
+	
+	anonymous variable
+	declared = variable = list (3 deep)
+	= anon = list 
+	list,list,list
+	list{list;list;list}
+	[replace]
+	
+	NOVAR # removes the _VAR declaration from list
+
+	# all within quotes, lambda, or comments are escaped
+	"  quoted" = escapes
+	# comments
+	{lambda} is second escape
+	Method(){lambda} #Method() does not require a body
+	
+	#reserved window characters
+	^:+|-*[](), all operators and punctuation are subject
+
+	|inline window| # atlas code found inline
+	^|variable code| # variable code found in atlas
+	
+# GUI-window-oriented code
+# interface contains many apps, so just check interfaces for required loading triggers
+
+# if Window, or in window, this is a 2D gui
+# if defined in 3Dcanvas... it should go there
+# if Mesh, this an array of stacked transforms, or a single transform
+# finally the option to add a window in mesh and vice-versa
+			|BG|
+
+
+			+---------------------------+
+			|                           |
+			| [ desktop               ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [                       ] |
+			| [ t                     ] |
+			|                      [bu] |
+			+---------------------------+
+
+#generic, win size is based on ratio, so larger ascii windows are more accurate
+
+
+maybe program something
+
+[x] bracket put x in here
+, concatenate windows
+"t" quotes add text "t" here
+'t  single letter t here (pref all other single letters join in)
+
+#single line, horizontal    #vertical
+a is a tall skinny window    a is short and wide
+|[a]         |               single letters only
+							 . extends a
+a fills half the window      -    -
+|[a]   |                     a    a
+								  .
+a fills the entire window    b    .
+|[a]|                             b
+                             -    -
+#multiple line
+a is a tall skinny window
+b fills half the window #alternative with dots
++------------+          +------------+
+|[a]   [b   ]|    ==    |a .   b    .|
+|[ ]   [    ]|    ==    |. .   .    .|
+|[ ]   [    ]|    ==    |. .   .    .|
+|[ ]   [    ]|    ==    |. .   .    .|
+|      [    ]|    ==    |      .    .|
++------------+          +------------+
+
+# intersecting dots, favors vertical parent, to place a below b a bracket is required
++------------+ = +------------+ 
+|      b    .| = |      [b   ]| 
+|a     .     | = |a     [    ]| 
+|.           | = |.           | 
+|.           | = |.           | 
+|.           | = |.           | 
++------------+ = +------------+ 
++------------+ = +------------+               
+|      b    .| = |      b    .|               
+|[a    ]     | = |[a    ]     |               
+|.           | = |[     ]     |               
+|.           | = |[     ]     |               
+|.           | = |[     ]     |               
++------------+ = +------------+               
+
+
+all these are equivalent
+	                      +-----+ = +-----+
+	   -  + + = +-----+ = |[a  ]| = |a  ..|
+|[a]|= a  [a] =  [a  ]  = |[   ]| = |.  ..|
+	   -  + + = +-----+ = +-----+ = +-----+
+deformed versions         first letter defines
+ , are the same           window here
++a+	  ++             !=      +a+   ++
++.+	= a. = +[a  ]+   !=      +a+   aa  +aa...+
+      ++ = +-----+   !=            ++  +-----+
+	                         	    
+	     
+these only take bottom half of the window because a needs to be at topleft most position
++-----+ = +-----+
+|[   ]| = |     |
+|[a  ]| = |[a  ]|
++-----+ = +-----+
+
+and if they're all blocked together the replacements are added to the same window, a single non-window variable ends the chain
+
+#if there's a parameter declaration... I can define the window without changing the scope
+#it's been decided the first parameter reading left-right top-down defines the window unless it's a special window type
+
+win1 { title = cool window title, width = 25, height = 45 , x = 0, y = 0}
+win1 { pad = 5}
+win1 { padleft = 5, padtop = 5}
+win1 = horizontal group # or vertical
+
++-win1   ----+
+|[a]   [b   ]|
+|[ ]   [    ]|
+|[ ]   [    ]|
+|[ ]   [    ]|
+|      [    ]|
++------------+
+}
+
+Parameters
+{
+leading name: trailing
+= Communicate with siblings
+$ sign is a behavior mod
+title key
+   =name: Mod Sibling in Parent
+   ^name: Mod Parent in its Parent
+	name$: Mod This in Parent
+	name:$ Mod Content as Parent
+	name: $[w ] Mod touching element
+	name: [x ]=[w ] Apply touching element mod
+	name: ^[w ] Apply element mods to this
+examples	
+	+=$a$:$+ 
+	+ $[w ]+
+
+	|=^a$:$ $[w ]|
+
+
+
+#parametric label
+/f use the mods in f named windows for content at a given position
+it would make a declaration like this possible
+|w: &&|
+
+# seems difficult to grasp
+*:/w  *    
+:! U<ab    a, b are columns of lists
+V!13<cd    everything left of col 3 is new
+* 24<h*    
+
+name/f: mods this window when it's at the given position in its parent
+/f name: mods parent when this is a given position
+
+#sum mod
+a\: apply all mods in like-named windows
+\a: apply all mods in parent as well as default child behavior
+
+#label
+\MR6 makes label, apply MR to all elements labelled 6
+\6a applies 6 to a
+
+}
+
+Window Borders
+{
+#simple window characters
++|- boundary
+
+# reserve all uppercase, numbers, and symbols
+
+# row and boundary declaration
+Any +window may have borders |- outside the very edge are visible lines, they are always boundaries
+
+[]. inner window, resize,
+[ ],[ ]merge left and right
+ merge top and bottom 
+[,] [,],[ ]   a   .,b  [,],[ ]
+[ ] [ ] [ ]   .     .  [ ][  ]
+causing an intersection this way forces a merge, it will cancel the topright
+2 windows 1 window
+[,],[ ]    [,],[ ]
+[ ][  ]    [ ][  ]
+    [ ]    [ ]"wo"
+this should concatenate "a","b"
+}
+
+Basic Mods
+{
+# A folding "Button" for a window
+B Bx sets minimized appearance as button with ^ applied, ~B sets appearance to whatever window parent makes for it
+T Tx T"title" set text, or x as default appearance in list
+W Wx: set a smaller window version
+W is also the char representation of window in atlas definition
+
+# format content
+Ab array, b is displayed as list
+AG, AH, AV grid, horizontal, vertical
+
+Rb rotate b
+R$b rotate b and realign its content
+x E"match"b display the contents of b matching string
+
+# list of items
+A array & tabs &> folds right
+|:&w.a.s.d| lists wasd tabs |&w&a&s&d|
+|:&w,a,s,d| lists one tab that displays [w,a,s,d]
+|:I&w,a,s,d| lists w.a.s.d
+|:IAw,a,s,d| lists the content of w and then a and so on s.d
+# shortening
+:. assumes single letter elements
+|:.&wasd|
+
+# aligning
+|pM:. &txyz| makes a window that appears in the middle of its parent, labelled p, with a list element that tries to open [t] and currently is displaying three 3 columns of content
+
+«><» V U * also >>, *>,  U, UU, *U
+expanding/folding window inner boundaries, or flow control with F enabled
+
+I insert into list (if applicable)
+_ set an insertion point
+&a.._.. will insert on right side of list
+LMRTB align xy, MT mid-top
+
+! :! ¡ physics
+
+
+#flow, window default on, gui default off
+F modifier, makes modifiers follow chains ?, flow control MO O>  nesting direction > < U V, and
+F> read left to right Default, F< read right to left 
+~F mod only the next element in flow direction, otherwise use trailing parameter, and direction are folding lists
+
+⌂ flow begin ◊ terminator
+¤☼÷ particle display a default particle when hovered and clicked
+◘•Ф¦ portal, exit, stop, relief: <>UV direction
+F enables flow behavior of <>OX_
+?s a macroscopic list element opened in place follows a chain of like-names...
+
+¿ macroscopic list, but the elements jump lanes and fall out of order
+#sound, animation
+♪♫ default tone, music, 
+keywords tone = a, file, music = b, file to create labels
+use defaultmusic, defaulttone to change defaults
+~P will turn off the music
+
+
+#A Button for saving alterations
+Ca a copies contents of its source once, but its source can be updated with an embedded %:Button
+the contents of a child can be updated with 
+Ca=Button
+
+%a a links contents and remains a reflection of its source, the window itself can change and be moved, but changing any contents is reflected immediately
+
+
+$ the touching windows are rearranged in a smooth constant interpolation so it's like they're physcially staying connected
+
+P play, start all animations
+S signal, send all input of focused element to all children
+
+
+# meta coding window?
+#adjacent
+adjacency means starting directly next to or within M1 - M9, with number tail, M0 disables mod M
+flow means everything in a logical order by symbols
+FU> denotes flow direction, bottom U up, left > right
+M> flows right, <M applies everything left before reading ending M or X, this makes it hard to read normally (so code a window flattener that auto-builds these)
+
+^ denotes an elevated atlas, ^name:MODS escape is ~^
+^|elevated|, is a variable, only certain modifiers affect how it's interpreted
+
+# deciding if I should require elevation for atlas mod use since defining an elevation makes an atlas window just a bigger window
+window declaration starts a default atlas that ends after any external variable declaration
+
+
+^a: encapsulate window a's variables
+:^a apply window a's variables
+
+Db dive into window b
+D(label) treats a tabbed window like a dive
+#something like V_History could store a stack of dives, then there's a nice way to escape, also something like Browse_History
+E* escape to parent, same as E1
+En escape n levels 
+E0 top level
+
+
+#considering mods
+C copy a definition
+S split a definition and insert here with any following mods
+X close element (in gui)
+identity:mods#@Modify this window's default value
+H hidden, even when applied, prevents auto insertion
+'#..# prevent a range within the window from compiling
+
+I auto insertion, this seems to make sense for lists like macrocosm or tab lists
+I copy / insertion
+
+
+}
+
+"Yes" man Tentative Definitions
+{
+some constants begin with "_" but maybe those should be changed to key words
+% is generally a string replacement, and I currently use [] to move entire windows
+
+@ represents garbage, binary, hex, random string, and a point of attack
+reference keywords: parent, replacement
+
+# keyword parent usage
+parent = window
+parent = *window[0]
+
+#reserved in window
+Uppercase letters are called mods 
+window ^+|-*[](),
+
+# size scale
+width, height, xscale, yscale
+#transform , an easy, neat trick might be to put this window in another and then it can move all its contents
+xpos, ypos, 
+rotation, rotate = degree, seconds
+
+wobble = degree, seconds : clamp between min rotation-degree max rotation+degree
+
+process = time, loop {[loop < 5], speed, time, program, make {a}, ¤☼÷, time, "text out", |window out|, named_animation, kill {b}, loop++}, "%loop%"#after time ends, the next step executes, in this case displaying the string representation of loop
+	
+#movement, for goal oriented movement make a mob, and put any gui in it
+move pattern, can be any combination of the following, set relative or absolute positions
+move {absolute, x =,y =, speed =} 
+speed : pixels = pixel per second, delay = seconds before arrival, timing = [activator_value > target_value]
+sleep : completely stop
+repeat [=n times], pingpong
+move {goal {foo}} moves to foo's location
+move {?window = w} follows a pattern defined by macro within the entire containing window so
++w?F:---+
+    >sss◘
+    s    
+  sssss>⌂
++?------+
+this will do something like walk backward climb to the top of the screen and walk off to the right
+
+move {?con = w, } moves in a relative pattern repeatedly while trying to reach its next x,y goal
++w?-----+
+   ssss    tight circles
+   s  s 
+   sss>  
++?------+
+move {math = name or equation, x, y, z} this can be a wave form, moves like ?con, but possibly less random in appearance
+
+global method : TextAsset(filename,delimiters)
+parent: is some way to organize parented?
+
+Interface, App in general, they use their own keywords
+Canvas, 3DCanvas, Mesh
+Window # basically all mods in the main body apply to window
+Text : add parameters to the body
+	Edit, Animate, Color, Font, FontSize
+TextDefault : this should alter all embedded strings 
+Gui :
+	#all about dragging gui
+	! is physical, no gravity (add to a window with gravity) sub options also apply physics
+	D drag, DI drag-drop, ID elements can be removed !D collide while dragging D! push physical objects, you don't drop into DP push other elements that are draggable PD resist getting pushed ¡D Drag, can't be pushed
+	DZ apply all effects except ¡D
+	# for further gui options, make a new document
+	
+#these are basically gui, gui is window, but with different mods
+Scroll:
+angle
+ Button, Signal
+	
+# and possibly these later. which could appear anywhere?
+Mob : defined mob, vs the mob chars below
+	Drag {target, goal} attempt to drag target to goal
+	Attack {target, distance} attempt to touch target within distance
+	Retreat {target, distance} retreat from target within a distance
+Inventory : make an inventory list with max values and stores items in one position in the list
+	probably alters the behavior of all list elements
+	eg button sets an item to selected, so it can be used, rather than attempting to open it
+Motor Engine or Generator : make an object that behaves like a motor
+	fuel = b,z,g like a list, this can hold set values
+	rate = the amount of fuel consumed
+	min min value for play to begin
+	max max capacity
+	play {a} sets a value to play=1 when min achieved
+	a = |C[a]|
+	animations {} # list of animations to add to process
+	windows {} # list of animations to add to process
+	process = loop {speed, time, program, make {a}, ¤☼÷, time, "text out", |window out| named_animation} 
+	speed is like move, but this works on a loop
+	time allocates a time slice to the next step, which 
+	make sets a goal production and loops for set time displaying progress before breaking out
+	
+	program {} optional value that works like move to make something with a macro or x y values
+
+Maze :  simple maze
+KillMaze :  maze that restarts if you touch border
+Dungeon :  a multi - floor dungeon
+Platformer : uses keyboard
+	
+Method. Sleep(timeout)
+
+Definition
+{
+Animation
+this will scale, move, and change content each step, unlike move where the scale remains the same
+
+# if omitted the process just calls loop {interpolate}
+process = loop {time, interpolate, ¤☼÷} 
+
+#frame is pattern for a single frame
+interpolate = {frame {speed, img}, sleep .1}
+|z        || z       ||  z      ||   z     ||    z     ||     z    ||      z   ||       z  ||     z ||     z|
+
+#anim = run, tired
+#run = SpriteList(runAnim)
+#tired = SpriteAsset(tired), SpriteList(sweat)
+# if run is used in img at any point, then asset load should be automatic
+
+# likewise the anim method can be set
+#RepeatAnim(img){} increment img, and restart, or do nothing if image isn't list
+#PingpongAnim(img){}
+#TextureAnim(img, x, y){} move a texture coordinate
+tired = repeat, layer {sweat, repeat, speed = .5}, layer {heartbeat, pingpong, speed = .2}
+run = repeat / pingpong/ math # auto-detect texture?
+
+process = loop {time = .2,, interpolate, anim} 
+interpolate = {frame {delay = 1,, image = run},frame {speed, image = tired}}
+|z        ||        z|
+this makes a smooth transition left to right
+
+}
+
+
+}
+
+Mod future 1, modding the mods
+{
+
+escape mod ~
+:~ escapes every following modifier
+~[a] escape every modifier of window a
+~$ escapes $ modifier only
+
+name~: this is immune
+=~name: this grants immunity to siblings
+~name: this grants immunity to parent
+
+#tentative
+~*: cancels all window modifiers when operated
+#~
+
+esoteric mods
+☻ pc ☺ npc  starts Game: ◘• ║═ lock, key, doors
+§ √ spawn, trigger 
+■◄►▼▲ mob 
+
+█▓▒░ env. light or quality of text absorption
+↔ LR swap ↕ UV swap  
+←→↑↓ x→[] force insert x at position
+… file 
+
+}
+
+Mod future 2, folding & list mastery
+{
+
+/*now some hypotheticals*/
+#folding / hiding windows
+
+one window that folds 8 ways
+
++*--UUU        ---*+    key
+|	[ desktop     ]|
+<	[             ]>
+<	[             ]>    * fold_button
+<	[             ]>    [*] bigger fold_button
+<	               |    < open right, close left
+<	               |
+|			       |
++*-- VVV         -*+
+
+
+#cascading windows
+3 separate windows
+
+ collapse one item U V < or >
+  multiple item UU VV << or >>
+ collapse window including enclosed element (defined in this window)
+ 
+ *< or >* U* V*
+
++--    U*  --+    +--  +--  
++--    UU  --+    |<[a]|<[b]<
+|-- U-U-U-U--|    *<[ ]<<[b]<
+|[a         ]|    *<[ ]<<[b]<
+|-- U-U-U-U--|    *<[ ]<<[b]<
+|[c         ]|    *<[ ]<<[b]<
+|-- U-U-U-U--|    *<[ ]<<[b]<
+|-- --VV-----|    |<[ ]|<[b]<
++[c         ]+    +--  +--  
+reverse arrow is also true
+
+this is a compressed variation
+the directions aren't limited
+ #key                    #cascading windows
+ # the first a is not defining, but the defined windows are easier to reuse
+   |3*>a>b>c>|  collapse right, expand left
+   - ----              
+   U 1122        x  
+   a UUUU        > doesn't collpase x      
+   U ab13        b collapses b and a right         
+   c UUUU        a     
+   V efgh              
+   V VVVV              
+   - VV**
+     ----
+  
+ 
+ 
+ 
+
+#tabs, also links
+interpreted as 4 separate tabs in one window, the first lowercase word defines the window
++a           + +b           +
+ (a)(b)(c)(d)   (a)(b)(c)(d)
+    "cool"        "hi"
++            + +            +
++c           + +d           +
+ (a)(b)(c)(d)   (a)(b)(c)(d)
+
+
+    "3 times"      "4th window"
++            + +            +
+
+this is an attempt to compress them
++a-----(a)( )+ +a-----(a)(b)+
++  1"win"    + +  1    "dow"+
+
+tabs on the sides
++a- +    +b( )---+
+() ()    ( )   ( )
+(b)()    +()  (a)+
++   +
+
+
+this is a compressed variation for tabs
+1st char defines window, <2nd char defines tabs, & defines window body & defines more tabs
+vertical places the tabs in a row at the top... or bottom
+stacking horizontal places the tabs on the side
+  2..4 windows, 40 tabs, 6 variables used 16 times
+
+# super compressed? but still readable?
+f=word,h=end
+i=bird,g=third
+j=something else
+----|a:&bcd~&e[b]&b|
+abcd|b:&cda~&f[c]&c|
+::::|c:&abd~&g[a]&d|
+....|d:&abc~&h[a]&a|
+baaa----|a: &cf[c]&b|
+ccbbabcd|b: &ai[a]&c|
+dddc::::|c: &bh[a]&a|
+&&&&&&&&|c: &bj[a]&a|
+efghbcdae=wazzup
+--------
+
+
+#vertical only looks like...
+f=word,h=end,e=wazzup
+i=bird,g=third
+j=something else
+----------------
+abcdabcdabcdabcd
+baaabaaabaaabaaa
+ccbbccbbccbbccbb
+dddcdddcdddcdddc
+&&&&&&&&&&&&&&&&
+efghefghefghefgh
+----------------
+
+#horizontal can be like... shit
+f=word,h=end,e=wazzup
+i=bird,g=third
+j=something else
+|abc&[f][b]&b||bac&[f][b]&b||cab&f[b]&b|
+#or easier to read like, nice!
+|ag&"topleft"[b]&   b| |ba&"topright"[c]&   c|
+|gh&"left2"[a]&     c| |cg&"right2"[a]&     d|
+|hi&"leftMiddle"[a]&d| |dh&"rightMiddle"[a]&e|
+|ij&"left4"[a]&     e| |ei&"right4"[a]&     f|
+|jk&"bottomleft"[a]&f| |fj&"bottomright"[a]&a|
+
+
+# physics
+! one window :!or‼ everything 
+¡ or P make a planetary orbit while escaping normal gravity
+<>UV = wind force, behaves like one-directional gravity in its line
+extra window walls are walls.., and broken window walls allow objects to pass through
++a:!V------+      +a:!V------+         
+|       ¡n |      |       ¡n |    gravity      
+|          |      |      [b] |    to      
+| a a$[b]  | open |       $a |  up       
+| a >             |   >      fall or fall
+|   -------|      |   -------|       down 
+|          |      | aa       |   through hole
++----------+      +----------+       a$[b]
+}
+
+Mod Future 3, macroscopic
+{
+
+a list that only flows will stop flowing
+Macroscopic, name, [activator],[operator triggers when full] {
+
+}
+# macroscopic list, it's like a super list
+a list that folds will animate a reverse motion
+:* :~* enable or disable fold 
+:F :~F enable or disable flow
+
+?a: this is a macroscopic list
+? everything contained expands inside this list with given shape except when escaped ~
+?a every stored varible at position a expands to this shape. Or if a variable is just text it scrolls the text up by default.
+~a everything in a is as it was, escape ?a
+
+finally ¿ adds randomization without definition to start point
+
+keywords :
+	start, spawn = x
+	the list will go to x, and repeatedly restart at the closest position to x until reaching endpoint
+	end, far = z
+	the list will start as far from z possible until reaching an endpoint
+	reverse = 0
+	speed = m # see move 
+	pattern = m # see move
+	jump = 0 # special behavior to jump lanes
+	random = q # like ¿ but only affects positions with label q
+	
+a from left expands to... right
+# intuitive direction, top left, to bottom
+# or declare a wind force ?<, setting an unintuitive direction with lanes
+
+Macroscopic, name {
+	a = hello
+	b = how are you?
+	g = ok thanks
+	
+	a = Window, Welcome
+	{
+	|a&abg|
+	|"con"|
+	}
+}
+
+?a this is what the list expands
+
++----------+ +---------------     +
+?a  ssaas  | ?a     a.b.g.'c'o    |
+|       b  | |              'n    |
+|    sssb  | |        [][][][]    |
+|    s     | |        []          |
+|          | |                    |
+|    s     | |        []          |
+|          | |                    |
++----------+ +----------          +
+
+
+# arrow denotes a spawn point, with the sort order of the list, and the list flows towards the letter-props
+# open ab with s 
+
+
+
+s = |ab|
+# contents of s in this window  
++----------+  +--------- +  +--------- +
+?   >ssss  |  |   >hell  |  |   >are   |
+|       s  |  |      'o  |  |      'y  |
+|    ssss  |  |    woh   |  |     ?uo  |
+|    s     |  |   '      |  |   'h     |
+|    ssssX |  |    are   |  |    ello  |
+|          |  |          |  |          |
+|          |  |          |  |          |
++----------+  +--------- +  +----------+
++----------+  +--------- +  +--------- +
+?   <ssss  |  |   < era  |  |   <olle  |
+|       s  |  |      '   |  |      'h  |
+|    ssss  |  |     how  |  |    ou?   |
+|    s     |  |   'o     |  |   'y     |
+|    ssss  |  |    lleh  |  |     era  |
+|          |  |          |  |          |
+|          |  |          |  |          |
++----------+  +--------- +  +----------+
++----------+  +--------- + 
+?    ssss  |  |    hell  | # looks the same
+|       s  |  |      'o  | # when final, but
+|    ssss  |  |    woh   | # reverse flow
+|    s     |  |   '      | # animation
+|    ssss> |  |    are > | 
+|          |  |          | 
+|          |  |          | 
++----------+  +--------- + 
+control flow with portals, stops, accelerators, and relief
+>»
+◘•Ф¦
+F flow
+X stop
+_ relief
+<>UV work just like portal exits
+O1 goes to F1
+# s in this window, not exactly, but something like this, the flow portals favor entering the same direction they left, and the stops force a pile-up before flow continues in relief veins
++----------+   +--  ------+  +--  ------+
+?  •⌂>sssss◘   |  •⌂>hello◘  |  VF>helloO
+|  s       |   | '        |  |          |
+|  s »ssss◘¦   | 'e » h o◘¦  |   >> h oO_
+|  s       |   | 'y       |  |          |
+|  Ф•sss◘         Ф•war◘        X>warO   
+| >¦¦¦¦¦¦¦ |   |  >ou?¦¦¦ |  | >eyou?__ |
+|          |   |          |  |          |
++----------+   +--  ------+  +--  ------+
+
+#flowchart-like control, 3-way split, with pipes
+# IT WOULD LOOK FINE IF THEY WERE JUST ITEMS
+							 
++?:---⌂----+  +-----⌂----+  
+  sss<◊>ss•|  |"hol helo"|  
+| s     s V|  | w    'a  |  
+| s  ssss s|  | r "u ye" |  
+| s  s    s|  |   '?     |  
+| s  sssФ s|  | o "    " |  
+| Ф       s|  |          |  
+|          |  |          |  
++----------+  +--------- +  
+
+#macrocosmic, become macroscopic list
+this is a list that contains only full/complete microcosmic lists, and when it fills up it can be used the same way
+
+#1 inserts itself automatically
+#2 is the macrocosm
+#3 is what a full list might look like
+
++aIb:----- + +b--¦¦¦¦¦¦¦   + +b--a¦¦bb¦¦   +
+?a  ssaas  | ?a   based¦¦  | ?a  bsedase   |
+|       b  | ?s      b!¦   | ?s      d!¦   |
+|    sssb  | ?e   desa¦¦   | ?e   abdase   |
+|    s     | ?d   b¦¦¦¦¦   | ?d   sed¦¦¦   |
+|          | |             | |             |
+|    s     | |    a¦¦      | |    aaa     !b
+|          | |           Ic: |        !s!a!a
++----------+ +-------------+ +----------Ic:+
+
+# final example, make it rain with a nested physics modifier
++c--------- ------------- -------------+
+?b >bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+|   ◘¦¦>¦¦¦◘¦Ф¦¦◘¦¦>¦¦◘Ф¦¦◘¦◘>¦¦◘>Фbb>
+¿b:!•b •b•b•b•b b•b• •bb• b• •bb••bb•   
++---                                 --+
+
+
+}
