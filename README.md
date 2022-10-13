@@ -1,6 +1,18 @@
 # Chaos-Contract-2019
 I still believe Virtual Reality can be achieved
 
+# end-user pitch
+
+it succeeds at imitating a camera, human memory, writing on paper, etc.
+
+it succeeds at imitating watching a video, trying to remember, and reading from paper (respectively).
+
+characters will do and imitate what a player expects them to, from script, to play a role in their fantasy
+
+
+# The technical details are many
+
+
 The program I wrote can significantly improve a flexibility of written 
 	dialogue
 	polling character action
@@ -12,15 +24,19 @@ it can poll, procedurally generate descriptions of
 	
 
 
-The technical details are many, ultimately it's a textual system, and it is context ready for anything that can be translated to code or human-readable format.
+The calculator is the main loop
+* For everyday writing, a custom markup language allows for code to execute from scripted dialogue like an event system (it does not interfere, and on debug programmers are notified to implement the missing methods)
+* For everyday modding, there's a front-end layer that allows new calculator functions to be modded (this has not been tested)
 
-# end-user pitch
+* it's a contextual and dialogue-based system, non-linear, as the on-screen dialogue has been implemented to be recoded in the future as a notepad, or a grid-based format, allowing runtime coding.
+* The dialogue is ready for anything to modify it realtime via code
+* The base classes have been set up to allow inheritance, still a bare-bones concept
 
-it succeeds at imitating a camera, human memory, writing on paper, etc.
+In order to make everything work I included a custom text class- with gui, main-loop calculator, markup language for writing dialogue, and an incomplete "Yes" man (omni-direcitonal lang) for scripting entirely new Gui
 
-it succeeds at imitating watching a video, trying to remember, and reading from paper (respectively).
+There's a custom GUI that can easily be extended
 
-characters will do and imitate what a player expects them to, from script, to play a role in their fantasy
+Much of the physics-based work uses the same GUI code now, so any of the old redundant physics are not worth updating
 
 # ChaosGame Relevance
 
