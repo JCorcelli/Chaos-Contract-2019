@@ -23,8 +23,6 @@ it can poll, procedurally generate a record history, using descriptions of
 
 this is a multi-user ready environment
 
-notes describing the process of creating the calculator are strewn about in this repository and GameDesign documents
-
 The calculator is the main loop
 * For everyday writing, a custom markup language allows for code to execute from scripted dialogue like an event system (it does not interfere, and on debug programmers are notified to implement the missing methods)
 * For everyday modding, there's a front-end layer that allows new calculator functions to be modded (this has not been tested)
@@ -38,6 +36,8 @@ In order to make everything work I included a custom text class- with gui, main-
 There's a custom GUI that can easily be extended
 
 Much of the physics-based work uses the same GUI code now, so any of the old redundant physics are not worth updating
+
+**I have not kept track of where I left most of the notes. See text repository GameDesign for esoteric summaries of concept and lore.
 
 # ChaosGame Relevance
 
