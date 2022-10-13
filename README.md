@@ -12,17 +12,18 @@ characters will do and imitate what a player expects them to, from script, to pl
 
 # The technical details are many
 
-
 The program I wrote can significantly improve a flexibility of written 
 * dialogue
 * polling character action
 
-it can poll, procedurally generate descriptions of
+it can poll, procedurally generate a record history, using descriptions of
 * events
 * actions
 * objects
-	
 
+this is a multi-user ready environment
+
+notes describing the process of creating the calculator are strewn about in this repository and GameDesign documents
 
 The calculator is the main loop
 * For everyday writing, a custom markup language allows for code to execute from scripted dialogue like an event system (it does not interfere, and on debug programmers are notified to implement the missing methods)
