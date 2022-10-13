@@ -14,7 +14,7 @@ it can poll, procedurally generate descriptions of
 
 The technical details are many, ultimately it's a textual system, and it is context ready for anything that can be translated to code or human-readable format.
 
-#end-user pitch
+# end-user pitch
 
 it succeeds at imitating a camera, human memory, writing on paper, etc.
 
@@ -22,7 +22,7 @@ it succeeds at imitating watching a video, trying to remember, and reading from 
 
 characters will do and imitate what a player expects them to, from script, to play a role in their fantasy
 
-#ChaosGame Relevance
+# ChaosGame Relevance
 
 microverse/macroverse has been produced in "Yes" Man a language that easily describes 2d grids of gui and can reproduce a window-like environment
 
@@ -36,7 +36,7 @@ Location: Buildings, spawned objects, and objects are significant entities in th
 
 Inventory: This can be handled by combining containers and restricting removal, or replacement.
 
-#PfoteGame Relevance
+# PfoteGame Relevance
 
 The program systems coalesce into several categories
 
