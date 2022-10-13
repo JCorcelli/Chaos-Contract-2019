@@ -37,7 +37,7 @@ There's a custom GUI that can easily be extended
 
 Much of the physics-based work uses the same GUI code now, so any of the old redundant physics are not worth updating
 
-*I have not kept track of where I left most of the notes. See text repository GameDesign for esoteric summaries of concept and lore.
+*Notes should be in the folder with the C# . If not, see /GameDesign for extensive lore and creative process.
 
 # ChaosGame Relevance
 
