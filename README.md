@@ -14,13 +14,13 @@ characters will do and imitate what a player expects them to, from script, to pl
 
 
 The program I wrote can significantly improve a flexibility of written 
-* *dialogue
-* *polling character action
+* dialogue
+* polling character action
 
 it can poll, procedurally generate descriptions of
-* *events
-* *actions
-* *objects
+* events
+* actions
+* objects
 	
 
 
