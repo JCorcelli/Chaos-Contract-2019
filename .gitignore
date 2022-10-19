@@ -12,6 +12,7 @@
 !*.prefab
 !*.asset
 !*.fbx
+!*.xml
 
 !LICENSE
 

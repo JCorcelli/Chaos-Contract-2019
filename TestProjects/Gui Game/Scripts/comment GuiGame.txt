@@ -300,4 +300,17 @@ future:
 		B=&A referencing A? requiring update calls
 		
 
+#Important todo
 Work on the use case: see comment desktopsimdate.txt
+
+
+The expected path to continuing is
+	WidgetScripts/
+	GuiRule > GuiMod 
+	Append GuiMod to component, make it a prefab (see guigame/laptopprefabs)
+	
+	Add the prefab to an asset list
+	
+The first application could be simplified to work on instancing
+
+I am taking it for granted that instancing will be easy
