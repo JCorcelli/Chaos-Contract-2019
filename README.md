@@ -76,3 +76,15 @@ Programming variables and virtual environment hooks that allow the game's enviro
 	Parsing scripts within dialogue
 	Scripting actions to occur as dialogue does
 	Generating dialogue ahead of time for predictions, before parsing
+	
+# Afterword, and duly noted shortness of this explanation
+
+I understand I know too much about the programs I made to objectively think someone looking at them sees something besides 1s and 0s flying around
+
+the flat rock calculator is dialogue physics, which attempts to concisely combine physical element and processes
+
+Yes man is combining text and dialogue boxes, menus, and component hierarchies. It's meant to be extended so I included control flow, just to make it more coding complete.
+
+The selling point of yes man is it works with the flat rock. The text and an embedded event system can be easily parsed real time.
+
+It sound like a reasonable explanation, but I can't possibly bring up everything
